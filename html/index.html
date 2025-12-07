@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reproductores de vídeo</title>
+
+
+    <!-- VideoJS -->
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+
+
+    <!-- HLS.js (para el Live) -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+
+    <style>
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        #player-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <h2>Reproductores de vídeo</h2>
+
+
+    <button id="btn-html5">HTML5</button>
+    <button id="btn-dash">DASH</button>
+    <button id="btn-live">Live</button>
+
+
+    <div id="player-container"></div>
+
+
+    <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+
+
+    <script>
+        const container = document.getElementById('player-container');
+
+
+        /* -------------------------
+           BOTÓN HTML5
+        -------------------------- */
+        document.getElementById('btn-html5').addEventListener('click', () => {
+            container.innerHTML = `
+                <video id="html5-video" width="800" height="450" controls>
+                    <source src="/videos/video1_720.mp4" type="video/mp4">
+                    Tu navegador no soporta el vídeo HTML5.
+                </video>
+            `;
+        });
+
+
+        /* -------------------------
+           BOTÓN DASH (video.js)
+        -------------------------- */
+        document.getElementById('btn-dash').addEventListener('click', () => {
+            container.innerHTML = `
+                <video id="dash-video" class="video-js vjs-default-skin" controls width="800" height="450"></video>
+            `;
+
+
+            const video = document.getElementById('dash-video');
+
+
+            // Inicializamos Video.js
+            const player = videojs(video);
+
+
+            // Inicializamos dash.js con adaptive streaming
+            const dashPlayer = window.dashjs.MediaPlayer().create();
+            dashPlayer.initialize(video, "/videos/dash/manifest.mpd", true);
+        });
+
+
+        /* -------------------------
+           BOTÓN LIVE (HLS.js + Video HTML5)
+        -------------------------- */
+        document.getElementById('btn-live').addEventListener('click', () => {
+
+
+            container.innerHTML = `
+                <video id="live-video" width="800" height="450" controls autoplay></video>
+            `;
+
+
+            const video = document.getElementById('live-video');
+            const videoSrc = 'http://localhost:8080/videos/live/stream.m3u8';
+
+
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(videoSrc);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = videoSrc;
+                video.addEventListener('loadedmetadata', () => video.play());
+            }
+        });
+
+
+    </script>
+</body>
+</html>
