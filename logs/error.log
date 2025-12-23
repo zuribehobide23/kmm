@@ -1004,3 +1004,42 @@
 2025/12/23 13:07:40 [notice] 12320#9280: worker process 11468 exited with code 0
 2025/12/23 13:07:41 [info] 16504#3252: *1 WSASend() failed (10053: An established connection was aborted by the software in your host machine) while sending response to client, client: 127.0.0.1, server: , request: "GET /video.mp4 HTTP/1.1", host: "localhost:8080", referrer: "http://localhost:8080/video.html"
 2025/12/23 13:07:41 [info] 16504#3252: *2 client prematurely closed connection while sending response to client, client: 127.0.0.1, server: , request: "GET /video.mp4 HTTP/1.1", host: "localhost:8080", referrer: "http://localhost:8080/video.html"
+2025/12/23 13:42:43 [notice] 14360#14324: using the "select" event method
+2025/12/23 13:42:43 [notice] 14360#14324: nginx/1.13.12
+2025/12/23 13:42:43 [info] 14360#14324: OS: 260200 build:9200, "", suite:300, type:1
+2025/12/23 13:42:43 [notice] 14360#14324: start worker processes
+2025/12/23 13:42:43 [notice] 14360#14324: start worker process 3288
+2025/12/23 13:42:44 [notice] 3288#18368: nginx/1.13.12
+2025/12/23 13:42:44 [info] 3288#18368: OS: 260200 build:9200, "", suite:300, type:1
+2025/12/23 13:42:44 [notice] 3288#18368: create thread 10584
+2025/12/23 13:42:44 [notice] 3288#18368: create thread 13028
+2025/12/23 13:42:44 [notice] 3288#18368: create thread 20132
+2025/12/23 13:42:53 [notice] 20712#21808: signal process started
+2025/12/23 13:42:53 [notice] 14360#14324: reconfiguring
+2025/12/23 13:42:53 [notice] 14360#14324: using the "select" event method
+2025/12/23 13:42:53 [notice] 14360#14324: start worker processes
+2025/12/23 13:42:53 [notice] 14360#14324: start worker process 6616
+2025/12/23 13:42:53 [notice] 6616#3956: nginx/1.13.12
+2025/12/23 13:42:53 [info] 6616#3956: OS: 260200 build:9200, "", suite:300, type:1
+2025/12/23 13:42:53 [notice] 3288#18368: gracefully shutting down
+2025/12/23 13:42:53 [notice] 6616#3956: create thread 16672
+2025/12/23 13:42:53 [notice] 3288#13028: exiting
+2025/12/23 13:42:53 [notice] 6616#3956: create thread 15216
+2025/12/23 13:42:53 [notice] 6616#3956: create thread 16848
+2025/12/23 13:42:53 [notice] 3288#10584: exiting
+2025/12/23 13:42:53 [notice] 3288#18368: exit
+2025/12/23 13:42:53 [notice] 14360#14324: worker process 3288 exited with code 0
+2025/12/23 13:46:27 [notice] 22792#22720: signal process started
+2025/12/23 13:46:27 [notice] 14360#14324: reconfiguring
+2025/12/23 13:46:27 [notice] 14360#14324: using the "select" event method
+2025/12/23 13:46:27 [notice] 14360#14324: start worker processes
+2025/12/23 13:46:27 [notice] 14360#14324: start worker process 15480
+2025/12/23 13:46:27 [notice] 15480#23036: nginx/1.13.12
+2025/12/23 13:46:27 [info] 15480#23036: OS: 260200 build:9200, "", suite:300, type:1
+2025/12/23 13:46:27 [notice] 6616#3956: gracefully shutting down
+2025/12/23 13:46:27 [notice] 6616#15216: exiting
+2025/12/23 13:46:27 [notice] 15480#23036: create thread 7508
+2025/12/23 13:46:27 [notice] 15480#23036: create thread 15472
+2025/12/23 13:46:27 [notice] 15480#23036: create thread 22820
+2025/12/23 13:46:27 [notice] 6616#16672: exiting
+2025/12/23 13:46:27 [notice] 6616#3956: exit

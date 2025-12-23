@@ -692,3 +692,5 @@
 127.0.0.1 - - [23/Dec/2025:12:46:02 +0100] "GET /hls/stream.m3u8 HTTP/1.1" 404 572 "http://localhost:8080/live.html" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
 127.0.0.1 - - [23/Dec/2025:12:46:04 +0100] "GET /hls/stream.m3u8 HTTP/1.1" 404 572 "http://localhost:8080/live.html" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
 127.0.0.1 - - [23/Dec/2025:12:50:25 +0100] "GET /index.html HTTP/1.1" 304 0 "http://localhost:8080/live.html" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+127.0.0.1 - - [23/Dec/2025:13:46:31 +0100] "GET /index.html HTTP/1.1" 200 2047 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+127.0.0.1 - - [23/Dec/2025:13:46:32 +0100] "GET /favicon.ico HTTP/1.1" 404 572 "http://localhost:8080/index.html" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
