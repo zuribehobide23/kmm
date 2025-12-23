@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+    <meta charset="UTF-8">
+    <title>Zuzeneko Streaming-a</title>
+
+    <link href="https://vjs.zencdn.net/8.20.0/video-js.css" rel="stylesheet" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .video-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 850px; /* Un poco más ancho para el directo */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .video-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Indicador de "En directo" */
+        .live-dot {
+            height: 12px;
+            width: 12px;
+            background-color: #ff4b2b;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 1; }
+            70% { transform: scale(1.5); opacity: 0; }
+            100% { transform: scale(0.9); opacity: 0; }
+        }
+        
+        video {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background-color: black;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background-color: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background-color: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Streaming en Directo</h1>
+
+    <div class="video-container">
+        <h2><span class="live-dot"></span> Zuzenean</h2>
+        <video id="live-video" controls autoplay muted></video>
+    </div>
+    
+    <a href="index.html" class="back-button">← Atzera</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        const video = document.getElementById('live-video');
+        const videoSrc = 'http://localhost:8080/hls/stream.m3u8';
+
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
+        }
+    </script>
+
+</body>
+</html>
