@@ -7,52 +7,158 @@
   <link href="https://vjs.zencdn.net/8.20.0/video-js.css" rel="stylesheet" />
 
   <style>
-    body { font-family: Arial; padding: 20px; }
-    .quality-menu button {
-      margin-right: 5px;
-      padding: 5px 10px;
-      cursor: pointer;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .quality-menu button.active {
-      background-color: #007bff;
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    h2 {
       color: white;
+      font-size: 2.5em;
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
+    
+    .video-wrapper {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 800px;
+      margin: 0 auto 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    video {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .quality-menu {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    
+    .quality-menu span {
+      font-weight: bold;
+      color: #667eea;
+      font-size: 1.1em;
+      margin-right: 15px;
+    }
+    
+    .quality-menu button {
+      margin: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      background: white;
+      border: 2px solid #667eea;
+      color: #667eea;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .quality-menu button:hover {
+      background-color: #764ba2;
+      border-color: #764ba2;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .quality-menu button.active {
+      background-color: #667eea;
+      border-color: #667eea;
+      color: white;
+      box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+    }
+    
+    .button-center {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
     .back-button {
       display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #6c757d;
-      color: white;
+      padding: 12px 30px;
+      background-color: white;
+      color: #667eea;
       text-decoration: none;
-      border-radius: 5px;
+      border-radius: 25px;
       cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
     }
+    
     .back-button:hover {
-      background-color: #5a6268;
+      background-color: #667eea;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 7px 20px rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
 
-<h2>Video Adaptativo con Video.js</h2>
+<div class="page">
 
-<video
-  id="mi-video"
-  class="video-js vjs-big-play-centered"
-  controls
-  preload="auto"
-  width="640"
-  height="360"
-></video>
+<h2>Adaptive Streaming Video.js</h2>
+
+<div class="video-wrapper">
+  <video
+    id="mi-video"
+    class="video-js vjs-big-play-centered"
+    controls
+    preload="auto"
+    width="640"
+    height="360"
+  ></video>
+ </div>
 
 <div class="quality-menu">
-  <span>Calidad: </span>
+  <span>Kalitatea: </span>
+  <button data-resolution="auto" class="active">AUTO</button>
   <button data-resolution="1080">1080p</button>
   <button data-resolution="720">720p</button>
   <button data-resolution="480">480p</button>
 </div>
 
-<a href="index.html" class="back-button">← Volver</a>
+<div class="quality-menu">
+  <span>Kalitatea: </span>
+  <span id="current-quality" style="color: #764ba2; font-weight: bold;">Cargando...</span>
+</div>
+
+<div class="button-center">
+  <a href="index.html" class="back-button">← Atzera</a>
+</div>
+
+</div>
 
 <script src="https://vjs.zencdn.net/8.20.0/video.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
@@ -60,14 +166,56 @@
 <script>
   const player = videojs("mi-video");
   const video = document.querySelector("video");
+  const currentQualityDisplay = document.getElementById("current-quality");
 
-  // Cargar el master playlist
   if (Hls.isSupported()) {
-    var hls = new Hls();
+    // Configuración de HLS con ABR (Adaptive Bitrate) mejorado
+    var hls = new Hls({
+      enableWorker: true,
+      lowLatencyMode: false,
+      backBufferLength: 90,
+      // ABR (Adaptive Bitrate) configuration
+      abrEwmaDefaultEstimate: 500000,
+      abrEwmaFastLive: 3.0,
+      abrEwmaSlowLive: 9.0,
+      abrBandWidthFactor: 0.95,
+      abrBandWidthUpFactor: 0.7,
+      // Configuración más agresiva para detectar cambios de red
+      abrMaxWithRealBitrate: true,
+      maxMaxBufferLength: 30
+    });
+    
     hls.loadSource("videos/master.m3u8");
     hls.attachMedia(video);
 
-    // Botones manuales
+    let isManualMode = false;
+    let manualQuality = '';
+
+    // Mostrar la calidad actual
+    hls.on(Hls.Events.LEVEL_SWITCHED, function(event, data) {
+      const level = hls.levels[data.level];
+      const height = level.height;
+      
+      // Solo actualizar si NO estamos en modo manual, o si coincide con la calidad manual
+      if (!isManualMode) {
+        currentQualityDisplay.textContent = height + 'p (AUTO)';
+      }
+      
+      console.log('Reproduciendo en calidad: ' + height + 'p, Bitrate: ' + level.bitrate);
+    });
+
+    // Log cuando cambia el nivel automáticamente
+    hls.on(Hls.Events.LEVEL_SWITCHING, function(event, data) {
+      console.log('Cambiando a nivel: ' + data.level);
+    });
+
+    // Detectar errores de red
+    hls.on(Hls.Events.ERROR, function(event, data) {
+      if (data.fatal) {
+        console.error('Error fatal:', data);
+      }
+    });
+
     const buttons = document.querySelectorAll(".quality-menu button");
 
     buttons.forEach(btn => {
@@ -77,16 +225,37 @@
         buttons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
 
-        if (hls.levels) {
+        if (res === "auto") {
+          // Habilitar modo automático (ABR)
+          isManualMode = false;
+          hls.currentLevel = -1;
+          hls.autoLevelEnabled = true;
+          currentQualityDisplay.textContent = 'AUTO (adaptando...)';
+          console.log('Modo AUTO activado - ABR habilitado');
+        } else if (hls.levels) {
+          // Modo manual: deshabilitar ABR y forzar calidad específica
           let index = hls.levels.findIndex(l => l.height == res);
           if (index !== -1) {
+            isManualMode = true;
+            manualQuality = res;
+            hls.autoLevelEnabled = false;
             hls.currentLevel = index;
+            currentQualityDisplay.textContent = res + 'p (forzado)';
+            console.log('Modo manual: forzando calidad ' + res + 'p, índice: ' + index);
           }
         }
       });
     });
+
+    // Información de debug sobre el bandwidth
+    setInterval(() => {
+      if (hls.bandwidthEstimate) {
+        console.log('Bandwidth estimado: ' + (hls.bandwidthEstimate / 1000000).toFixed(2) + ' Mbps');
+      }
+    }, 5000);
   }
 </script>
+
 
 </body>
 </html>

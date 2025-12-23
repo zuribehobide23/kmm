@@ -2,28 +2,71 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Página Principal - Streaming</title>
+    <title>Multimedia zerbitzuak</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
         button {
-            display: block;
-            width: 250px;
-            padding: 15px;
-            margin: 20px auto;
+            width: 300px;
+            padding: 20px 30px;
             font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+            background: white;
+            border: none;
+            border-radius: 25px;
             cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #667eea;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        button:active {
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
-    <h1>Bienvenido al Streaming</h1>
+    <h1>Multimedia zerbitzuak</h1>
 
-    <button onclick="window.location.href='video.html'">Bideo-erreproduzitzailea</button>
-    <button onclick="window.location.href='adaptive.html'">Adaptive streaming</button>
-    <button onclick="alert('Zuzenekoak aún no implementado')">Zuzenezkoak</button>
+    <div class="button-container">
+        <button onclick="window.location.href='video.html'">Bideo-erreproduzitzailea</button>
+        <button onclick="window.location.href='adaptive.html'">Adaptive streaming</button>
+        <button onclick="alert('Zuzenekoak aún no implementado')">Zuzeneko emanaldia</button>
+    </div>
 </body>
 </html>
